@@ -9,7 +9,7 @@ describe('UserRepository', () => {
     let client;
 
     beforeAll(async () => {
-        const uri = 'mongodb://root:root@localhost?retryWrites=true&writeConcern=majority'
+        const uri = 'mongodb+srv://m001-student:rasolive0532291@sandbox.wuewv.mongodb.net/lims?retryWrites=true&w=majority'
         client = new MongoClient(uri)
         await client.connect();
         collection = client.db('users_db').collection('users');
@@ -35,15 +35,15 @@ describe('UserRepository', () => {
             const user = await userRepository.findOneById(ObjectId(result.insertedId));
 
             expect(user).toStrictEqual({
-                _id: result.insertedId,
+                id: result.insertedId,
                 name: 'John Doe',
                 email: 'john@doe.com'
             })
         })
 
         test('Deve lançar uma exceção para um usuário não existente', async() => {
-            await expect(userRepository.findOneById(ObjectId('61a05c492d399952b235d8bd')))
-                .rejects.toThrow('User with id 61a05c492d399952b235d8bd does not exist')
+            await expect(userRepository.findOneById(ObjectId('61f59d2d712d72582e3803af')))
+                .rejects.toThrow('User with id 61f59d2d712d72582e3803af does not exist')
         })
     })
 
@@ -58,7 +58,7 @@ describe('UserRepository', () => {
             const user = await userRepository.findOneByEmail('john@doe.com');
 
             expect(user).toStrictEqual({
-                _id: result.insertedId,
+                id: result.insertedId,
                 name: 'John Doe',
                 email: 'john@doe.com'
             })
@@ -91,7 +91,7 @@ describe('UserRepository', () => {
                 email: 'john@doe.com'
             })
 
-            await userRepository.update(result._id, {
+            await userRepository.update(result.id, {
                 name: 'John Doe da Silva',
                 email: 'john@doe.com'
             })
@@ -99,7 +99,7 @@ describe('UserRepository', () => {
             const user = await userRepository.findOneByEmail('john@doe.com')
 
             expect(user).toStrictEqual({
-                _id: result._id,
+                id: result.id,
                 name: 'John Doe da Silva',
                 email: 'john@doe.com'
             })
@@ -118,14 +118,14 @@ describe('UserRepository', () => {
                 email: 'john@doe.com'
             })
 
-            await userRepository.delete(user._id)
+            await userRepository.delete(user.id)
 
             await expect(userRepository.findOneByEmail('john@doe.com')).rejects.toThrow()
         })
         
         test('Deve lançar uma exceção para um usuário não existente', async() => {
-            await expect(userRepository.delete(ObjectId('61a05c492d399952b235d8bd')))
-                .rejects.toThrow('User with id 61a05c492d399952b235d8bd does not exist')
+            await expect(userRepository.delete(ObjectId('61f59d2d712d72582e3803af')))
+                .rejects.toThrow('User with id 61f59d2d712d72582e3803af does not exist')
         })
     })
 

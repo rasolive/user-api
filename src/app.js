@@ -19,7 +19,7 @@ let connected = false
 
 app.use(async (req, res, next) => {
     if (!connected) {
-        const uri = 'mongodb://root:root@localhost?retryWrites=true&writeConcern=majority'
+        const uri = 'mongodb+srv://m001-student:rasolive0532291@sandbox.wuewv.mongodb.net/lims?retryWrites=true&w=majority'
         client = new MongoClient(uri)
         await client.connect();
         const collection = client.db('users_db').collection('users');

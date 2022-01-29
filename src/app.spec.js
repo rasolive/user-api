@@ -11,7 +11,7 @@ describe("UserApi", () => {
     let client;
 
     beforeAll(async () => {
-        const uri = 'mongodb://root:root@localhost?retryWrites=true&writeConcern=majority'
+        const uri = 'mongodb+srv://m001-student:rasolive0532291@sandbox.wuewv.mongodb.net/lims?retryWrites=true&w=majority'
         client = new MongoClient(uri)
         await client.connect();
         collection = client.db('users_db').collection('users');
@@ -88,7 +88,7 @@ describe("UserApi", () => {
                     email: 'john@doe.com'
                 })
 
-                const response = await request(app).get(`/users/${user._id}`);
+                const response = await request(app).get(`/users/${user.id}`);
 
                 expect(response.statusCode).toBe(200)
                 expect(response.body).toEqual(expect.objectContaining({
